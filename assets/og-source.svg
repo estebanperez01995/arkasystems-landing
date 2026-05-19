@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+  <defs>
+    <linearGradient id="ogAmber" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e8b26b"/>
+      <stop offset="100%" stop-color="#c89255"/>
+    </linearGradient>
+    <radialGradient id="ogGlow" cx="22%" cy="50%" r="35%">
+      <stop offset="0%" stop-color="#e8b26b" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#e8b26b" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="ogGlowR" cx="85%" cy="60%" r="40%">
+      <stop offset="0%" stop-color="#e8b26b" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#e8b26b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Warm dark background -->
+  <rect width="1200" height="630" fill="#1a1410"/>
+
+  <!-- Soft amber atmosphere -->
+  <rect width="1200" height="630" fill="url(#ogGlow)"/>
+  <rect width="1200" height="630" fill="url(#ogGlowR)"/>
+
+  <!-- Logo icon on the left -->
+  <g transform="translate(120 200) scale(2.3)">
+    <g stroke="url(#ogAmber)" stroke-linecap="round" fill="none">
+      <path d="M 50 24 C 44 38, 32 54, 24 70" stroke-width="7"/>
+      <path d="M 50 24 C 56 38, 68 54, 76 70" stroke-width="7"/>
+      <path d="M 32 60 Q 50 53, 68 60" stroke-width="6"/>
+    </g>
+    <g fill="url(#ogAmber)">
+      <circle cx="50" cy="24" r="9"/>
+      <circle cx="24" cy="70" r="9"/>
+      <circle cx="76" cy="70" r="9"/>
+      <circle cx="62" cy="56" r="5"/>
+    </g>
+  </g>
+
+  <!-- Wordmark + tagline on the right -->
+  <text x="380" y="280"
+        font-family="Geist, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="78" font-weight="600" fill="#f6f0e6"
+        letter-spacing="-2">arka systems</text>
+
+  <text x="380" y="345"
+        font-family="Geist, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="28" font-weight="400" fill="#c4b5a0"
+        letter-spacing="3">AGENCIA DE IA Y AUTOMATIZACIÓN · BARCELONA</text>
+
+  <!-- Tagline below -->
+  <text x="380" y="430"
+        font-family="Geist, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="36" font-weight="400" fill="#e8b26b"
+        letter-spacing="-0.5">Sistemas que trabajan 24/7</text>
+  <text x="380" y="478"
+        font-family="Geist, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="36" font-weight="400" fill="#e8b26b"
+        letter-spacing="-0.5">por tu negocio.</text>
+
+  <!-- Bottom accent line -->
+  <rect x="380" y="520" width="60" height="3" rx="2" fill="#e8b26b" opacity="0.6"/>
+
+  <text x="380" y="555"
+        font-family="Geist, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="18" font-weight="500" fill="#82766a"
+        letter-spacing="1">arkasystems.es</text>
+</svg>

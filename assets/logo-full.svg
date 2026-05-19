@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 320" fill="none" role="img" aria-label="Arka Systems">
+  <defs>
+    <linearGradient id="arkaAmberFull" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e8b26b"/>
+      <stop offset="100%" stop-color="#c89255"/>
+    </linearGradient>
+    <radialGradient id="arkaGlowFull" cx="50%" cy="35%" r="40%">
+      <stop offset="0%" stop-color="#e8b26b" stop-opacity="0.30"/>
+      <stop offset="100%" stop-color="#e8b26b" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Halo behind icon -->
+  <circle cx="120" cy="105" r="100" fill="url(#arkaGlowFull)"/>
+
+  <!-- Icon: A network mark, scaled and centered horizontally, top half -->
+  <g transform="translate(70 50) scale(1)">
+    <g stroke="url(#arkaAmberFull)" stroke-linecap="round" fill="none">
+      <path d="M 50 24 C 44 38, 32 54, 24 70" stroke-width="7"/>
+      <path d="M 50 24 C 56 38, 68 54, 76 70" stroke-width="7"/>
+      <path d="M 32 60 Q 50 53, 68 60" stroke-width="6"/>
+    </g>
+    <g fill="url(#arkaAmberFull)">
+      <circle cx="50" cy="24" r="9"/>
+      <circle cx="24" cy="70" r="9"/>
+      <circle cx="76" cy="70" r="9"/>
+      <circle cx="62" cy="56" r="5"/>
+    </g>
+  </g>
+
+  <!-- Wordmark with hierarchy: arka (semi-bold) + systems (regular, slightly smaller) -->
+  <text x="120" y="248" text-anchor="middle"
+        font-family="Geist, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="34" font-weight="600" fill="#f6f0e6"
+        letter-spacing="-0.5">arka</text>
+  <text x="120" y="288" text-anchor="middle"
+        font-family="Geist, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        font-size="22" font-weight="400" fill="#c4b5a0"
+        letter-spacing="2">SYSTEMS</text>
+</svg>
