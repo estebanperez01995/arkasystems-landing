@@ -768,6 +768,22 @@ window.ARKA_LINKS = {
   }
   .case-meta b { color: var(--ink-2); font-weight: 500; }
 
+  .case-video {
+    padding: clamp(24px, 3vw, 36px);
+    display: flex;
+    justify-content: center;
+  }
+  .case-video video {
+    width: 100%;
+    max-width: 480px;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+    border-radius: 12px;
+    border: 1px solid var(--line-soft);
+    background: #000;
+  }
+
   .case-stats {
     display: grid;
     grid-template-columns: 1fr;
@@ -1573,13 +1589,20 @@ window.ARKA_LINKS = {
         </div>
       </div>
 
+      <div class="case-video">
+        <video controls preload="metadata" playsinline poster="videos/caso-voraldent-poster.jpg" aria-label="Testimonio de la recepción de Voraldent sobre el sistema">
+          <source src="videos/caso-voraldent.mp4" type="video/mp4" />
+          Tu navegador no puede reproducir el vídeo.
+        </video>
+      </div>
+
       <div class="case-stats">
         <div class="stat">
           <div class="num">+ de <span>1.000€</span></div>
           <div class="lbl">Al mes recuperados en facturación</div>
         </div>
         <div class="stat">
-          <div class="num">+<span>20h</span></div>
+          <div class="num">+<span>15h</span></div>
           <div class="lbl">Al mes liberadas a recepción</div>
         </div>
         <div class="stat">
