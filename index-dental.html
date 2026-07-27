@@ -719,7 +719,6 @@ window.ARKA_LINKS = {
   }
   .case-client {
     display: flex; align-items: center; gap: 14px;
-    margin-bottom: 16px;
   }
   .case-logo {
     width: 44px; height: 44px;
@@ -745,19 +744,6 @@ window.ARKA_LINKS = {
     font-weight: 400;
     font-size: 13px;
   }
-  .case-quote {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-weight: 400;
-    font-size: clamp(22px, 3vw, 32px);
-    line-height: 1.25;
-    letter-spacing: -0.015em;
-    color: var(--ink);
-    text-wrap: balance;
-    max-width: 28ch;
-  }
-  [data-serif="off"] .case-quote { font-family: var(--font-sans); font-style: normal; font-weight: 500; }
-
   .case-meta {
     font-family: var(--font-mono);
     font-size: 12px;
@@ -1568,15 +1554,12 @@ window.ARKA_LINKS = {
 
     <div class="case reveal">
       <div class="case-head">
-        <div>
-          <div class="case-client">
-            <div class="case-logo"><img src="assets/voraldent-logo.jpg" alt="Logo de Voraldent" /></div>
-            <div class="case-client-name">
-              Voraldent
-              <small>Clínica dental · Barcelona</small>
-            </div>
+        <div class="case-client">
+          <div class="case-logo"><img src="assets/voraldent-logo.jpg" alt="Logo de Voraldent" /></div>
+          <div class="case-client-name">
+            Voraldent
+            <small>Clínica dental · Barcelona</small>
           </div>
-          <p class="case-quote">Las citas se confirman solas y la recepción deja de perseguir a nadie.</p>
         </div>
         <div class="case-meta">
           <div><b>Volumen</b> 30 citas/día</div>
