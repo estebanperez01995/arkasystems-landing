@@ -1,0 +1,8 @@
+{
+  "name": "arkasystems-landing",
+  "private": true,
+  "description": "Landing de Arka Systems. playwright-core sólo lo usa el harness de verificación en scrollcraft/.",
+  "devDependencies": {
+    "playwright-core": "^1.62.1"
+  }
+}
