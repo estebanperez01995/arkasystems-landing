@@ -1,2 +1,1 @@
-videos/*.mp4
-!videos/README.md
+# Los MP4 del hero sí se versionan (sitio estático sin build).
