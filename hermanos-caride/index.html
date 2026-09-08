@@ -46,7 +46,7 @@ window.CARIDE = {
   // Webhook opcional para el formulario (n8n, Make…). Si está vacío, el formulario abre el cliente de correo.
   webhook: "",
   // Vídeo del hero. "scrub": el vídeo avanza con el scroll (videos/hero-scrub.mp4). "loop": autoplay en bucle (videos/hero.mp4).
-  heroVideoMode: "scrub",
+  heroVideoMode: "loop",
   // Cuántas pantallas de scroll dura el recorrido del vídeo en modo scrub.
   heroScrubScreens: 3
 };
@@ -130,9 +130,9 @@ window.CARIDE = {
 <!-- ═══════════════════════════════════════════ HERO ═══ -->
 <section class="hero" id="hero">
   <div class="hero__media">
-    <!-- Modo scrub: el vídeo NO se reproduce solo, avanza con el scroll. hero-scrub.mp4 tiene keyframe en cada frame. -->
-    <video class="hero__video" id="heroVideo" muted playsinline preload="auto" poster="img/hero-poster.jpg">
-      <source src="videos/hero-scrub.mp4" type="video/mp4" />
+    <!-- Render del viaducto (Higgsfield 4K → 1080p). En modo "scrub" el JS cambia la fuente a videos/hero-scrub.mp4. -->
+    <video class="hero__video" id="heroVideo" autoplay muted loop playsinline preload="auto" poster="img/hero-poster.jpg">
+      <source src="videos/hero.mp4" type="video/mp4" />
     </video>
     <div class="hero__shade"></div>
     <div class="hero__grain" aria-hidden="true"></div>

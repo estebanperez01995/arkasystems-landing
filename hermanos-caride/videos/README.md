@@ -2,8 +2,8 @@
 
 | Archivo | Uso | Formato |
 |---|---|---|
-| `hero.mp4` | Modo `loop` (opcional) | 1920×1080, H.264, CRF 24, sin audio, ~5 MB |
-| `hero-scrub.mp4` | Modo `scrub` (por defecto: avanza con el scroll, no se reproduce solo) | 1280×720, H.264, keyframe en cada frame, ~10 MB |
+| `hero.mp4` | Modo `loop` (por defecto) | 1920×1080, H.264, CRF 24, sin audio, ~5 MB |
+| `hero-scrub.mp4` | Modo `scrub` (opcional: avanza con el scroll) | 1280×720, H.264, keyframe en cada frame, ~10 MB |
 
 Origen: render 4K del viaducto generado en Higgsfield (job `dbedd9e0…`, 10 s). El modo se elige en `index.html` → `heroVideoMode`.
 

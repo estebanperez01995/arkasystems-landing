@@ -88,7 +88,7 @@
 
   if (CFG.heroVideoMode === "loop" || reduce) {
     // Reproducción normal en bucle con zoom/parallax al hacer scroll.
-    if (!isDataSrc && heroSource) { heroSource.src = "videos/hero.mp4"; heroVideo.querySelectorAll("source:not(:first-child)").forEach((x) => x.remove()); heroVideo.load(); }
+    if (!isDataSrc && heroSource && !heroSource.getAttribute("src").endsWith("hero.mp4")) { heroSource.src = "videos/hero.mp4"; heroVideo.load(); }
     heroVideo.loop = true; heroVideo.autoplay = true;
     const tryPlay = () => heroVideo.play().catch(() => {});
     if (heroVideo.readyState >= 2) tryPlay(); else heroVideo.addEventListener("canplay", tryPlay, { once: true });
@@ -100,7 +100,8 @@
     // ── SCRUB ──
     // El hero se fija N pantallas y el tiempo del vídeo sigue al scroll con un suavizado (lerp)
     // para que el movimiento sea fluido aunque la rueda del ratón vaya a saltos.
-    heroVideo.pause();
+    heroVideo.removeAttribute("autoplay"); heroVideo.removeAttribute("loop"); heroVideo.pause();
+    if (!isDataSrc && heroSource && !heroSource.getAttribute("src").endsWith("hero-scrub.mp4")) { heroSource.src = "videos/hero-scrub.mp4"; heroVideo.load(); }
     const screens = Math.max(1.5, +CFG.heroScrubScreens || 3);
     let target = 0, current = 0, ready = false;
     const onReady = () => { ready = true; try { heroVideo.currentTime = 0.001; } catch (e) {} };
