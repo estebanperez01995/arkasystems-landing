@@ -82,24 +82,54 @@
   if (reduce) { loader.remove(); gsap.set([".hero__title .line > span"], { y: 0 }); gsap.set([".hero__sub", ".hero__actions", ".hero__meta"], { opacity: 1, y: 0 }); }
   else window.addEventListener("load", () => setTimeout(intro, 500));
 
-  /* ─── Hero scroll: parallax/zoom en modo loop, o scrub del vídeo ─── */
-  if (!reduce) {
-    if (CFG.heroVideoMode === "scrub") {
-      // El vídeo avanza con el scroll. Hero queda fijado durante 250vh.
-      heroVideo.removeAttribute("autoplay"); heroVideo.removeAttribute("loop"); heroVideo.pause();
-      // Versión con keyframe en cada frame para que el scrubbing sea fluido.
-      const scrubSrc = heroVideo.querySelector("source"); if (scrubSrc && !scrubSrc.src.startsWith("data:")) { scrubSrc.src = "videos/hero-scrub.mp4"; heroVideo.load(); }
-      const setTime = (p) => { if (heroVideo.duration) heroVideo.currentTime = heroVideo.duration * p; };
-      ScrollTrigger.create({
-        trigger: ".hero", start: "top top", end: "+=250%", pin: true, scrub: 0.6,
-        onUpdate: (s) => setTime(s.progress)
-      });
-      gsap.to(".hero__content", { yPercent: -30, opacity: 0, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "+=120%", scrub: true } });
-    } else {
+  /* ─── Hero: vídeo controlado por el scroll (scrub) o en bucle (loop) ─── */
+  const heroSource = heroVideo.querySelector("source");
+  const isDataSrc = heroSource && heroSource.getAttribute("src").startsWith("data:");
+
+  if (CFG.heroVideoMode === "loop" || reduce) {
+    // Reproducción normal en bucle con zoom/parallax al hacer scroll.
+    if (!isDataSrc && heroSource) { heroSource.src = "videos/hero.mp4"; heroVideo.querySelectorAll("source:not(:first-child)").forEach((x) => x.remove()); heroVideo.load(); }
+    heroVideo.loop = true; heroVideo.autoplay = true;
+    const tryPlay = () => heroVideo.play().catch(() => {});
+    if (heroVideo.readyState >= 2) tryPlay(); else heroVideo.addEventListener("canplay", tryPlay, { once: true });
+    if (!reduce) {
       gsap.to(".hero__video", { scale: 1.15, yPercent: 8, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
       gsap.to(".hero__content", { yPercent: -25, opacity: 0, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "70% top", scrub: true } });
-      gsap.to(".hero__shade", { opacity: 1.6, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
     }
+  } else {
+    // ── SCRUB ──
+    // El hero se fija N pantallas y el tiempo del vídeo sigue al scroll con un suavizado (lerp)
+    // para que el movimiento sea fluido aunque la rueda del ratón vaya a saltos.
+    heroVideo.pause();
+    const screens = Math.max(1.5, +CFG.heroScrubScreens || 3);
+    let target = 0, current = 0, ready = false;
+    const onReady = () => { ready = true; try { heroVideo.currentTime = 0.001; } catch (e) {} };
+    if (heroVideo.readyState >= 1) onReady(); else heroVideo.addEventListener("loadedmetadata", onReady, { once: true });
+    // Truco iOS: un play()+pause() silencioso desbloquea el seeking en algunos Safari.
+    const unlock = () => { heroVideo.play().then(() => heroVideo.pause()).catch(() => {}); window.removeEventListener("touchstart", unlock); };
+    window.addEventListener("touchstart", unlock, { passive: true });
+
+    gsap.ticker.add(() => {
+      if (!ready || !heroVideo.duration) return;
+      current += (target - current) * 0.12;
+      if (Math.abs(target - current) < 0.0004) current = target;
+      const t = current * (heroVideo.duration - 0.05);
+      if (Math.abs(heroVideo.currentTime - t) > 0.01 && !heroVideo.seeking) heroVideo.currentTime = t;
+    });
+
+    const st = ScrollTrigger.create({
+      trigger: ".hero", start: "top top", end: () => "+=" + (window.innerHeight * screens), pin: true, anticipatePin: 1,
+      onUpdate: (s) => { target = s.progress; }
+    });
+
+    // Titular: se queda durante el primer tercio y luego sube y desaparece.
+    gsap.timeline({ scrollTrigger: { trigger: ".hero", start: "top top", end: () => "+=" + (window.innerHeight * screens), scrub: true } })
+      .to(".hero__content", { yPercent: -20, opacity: 0, ease: "none", duration: 0.32 }, 0.08)
+      .to(".hero__meta", { opacity: 0, ease: "none", duration: 0.15 }, 0.08)
+      .fromTo(".hero__caption", { opacity: 0, y: 30 }, { opacity: 1, y: 0, ease: "none", duration: 0.18 }, 0.48)
+      .to(".hero__caption", { opacity: 0, y: -30, ease: "none", duration: 0.18 }, 0.78)
+      .to(".hero__shade", { opacity: 1.35, ease: "none", duration: 0.2 }, 0.8)
+      .to(".hero__video", { scale: 1.06, ease: "none", duration: 1 }, 0);
   }
 
   /* ─── Marquee infinito ─── */

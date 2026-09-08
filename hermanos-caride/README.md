@@ -45,7 +45,7 @@ Respeta `prefers-reduced-motion`: sin animaciones para quien lo tenga activado.
 
 ## Modo "scrub" del vídeo
 
-En `index.html` cambiar `heroVideoMode: "loop"` por `"scrub"`. El hero se fija durante 2,5 pantallas y el vídeo avanza con el scroll. Requiere un MP4 con keyframe en cada frame (comando en `videos/README.md`), si no, da tirones.
+En `index.html`, `heroVideoMode` controla el hero. Por defecto `"scrub"`: el vídeo no se reproduce solo, el hero se fija 3 pantallas (`heroScrubScreens`) y el vídeo avanza con el scroll usando `videos/hero-scrub.mp4` (keyframe en cada frame, si no da tirones). `"loop"` vuelve al autoplay en bucle con `videos/hero.mp4`.
 
 ## Ver en local
 
