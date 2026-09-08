@@ -1,23 +1,17 @@
-# Vídeos
+# Vídeos del hero
 
-Copiar aquí el MP4 final del hero como `hero.mp4` (1920×1080, H.264, sin audio, ~10-15 s, < 8 MB).
+| Archivo | Uso | Formato |
+|---|---|---|
+| `hero.mp4` | Modo `loop` (por defecto) | 1920×1080, H.264, CRF 24, sin audio, ~5 MB |
+| `hero-scrub.mp4` | Modo `scrub` (avanza con el scroll) | 1280×720, H.264, keyframe en cada frame, ~10 MB |
 
-Mientras no exista, `index.html` usa como fallback la URL del render de Higgsfield (CDN temporal).
+Origen: render 4K del viaducto generado en Higgsfield (job `dbedd9e0…`, 10 s). El modo se elige en `index.html` → `heroVideoMode`.
 
-## Optimizar para web (modo loop)
+## Regenerar desde un máster nuevo
 
-    ffmpeg -i original.mp4 -an -vf "scale=1920:-2" -c:v libx264 -profile:v high -crf 23 -preset slow -movflags +faststart hero.mp4
-
-## Optimizar para modo "scrub" (el vídeo avanza con el scroll)
-
-Para que el scrubbing sea fluido, cada frame debe ser keyframe:
-
-    ffmpeg -i original.mp4 -an -vf "scale=1920:-2,fps=30" -c:v libx264 -g 1 -keyint_min 1 -crf 22 -preset slow -movflags +faststart hero.mp4
-
-Luego en `index.html` cambiar `heroVideoMode: "loop"` por `"scrub"`.
-
-## Poster
-
-Extraer un frame para `img/hero-poster.jpg`:
-
-    ffmpeg -ss 00:00:01 -i hero.mp4 -frames:v 1 -q:v 3 ../img/hero-poster.jpg
+    # loop
+    ffmpeg -i master.mp4 -an -vf "scale=1920:-2" -c:v libx264 -profile:v high -pix_fmt yuv420p -crf 24 -preset slow -movflags +faststart hero.mp4
+    # scrub (cada frame es keyframe)
+    ffmpeg -i master.mp4 -an -vf "scale=1280:-2,fps=30" -c:v libx264 -profile:v high -pix_fmt yuv420p -g 1 -keyint_min 1 -crf 26 -preset slow -movflags +faststart hero-scrub.mp4
+    # poster
+    ffmpeg -ss 00:00:01 -i master.mp4 -frames:v 1 -vf "scale=1920:-2" -q:v 4 ../img/hero-poster.jpg

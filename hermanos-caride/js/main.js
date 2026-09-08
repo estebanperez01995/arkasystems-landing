@@ -87,6 +87,8 @@
     if (CFG.heroVideoMode === "scrub") {
       // El vídeo avanza con el scroll. Hero queda fijado durante 250vh.
       heroVideo.removeAttribute("autoplay"); heroVideo.removeAttribute("loop"); heroVideo.pause();
+      // Versión con keyframe en cada frame para que el scrubbing sea fluido.
+      const scrubSrc = heroVideo.querySelector("source"); if (scrubSrc && !scrubSrc.src.startsWith("data:")) { scrubSrc.src = "videos/hero-scrub.mp4"; heroVideo.load(); }
       const setTime = (p) => { if (heroVideo.duration) heroVideo.currentTime = heroVideo.duration * p; };
       ScrollTrigger.create({
         trigger: ".hero", start: "top top", end: "+=250%", pin: true, scrub: 0.6,
