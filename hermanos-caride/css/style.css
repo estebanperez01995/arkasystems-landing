@@ -5,9 +5,9 @@
 
 :root {
   /* Paleta derivada del logo: navy #0B2A5B · azul real #1E5BC6 · azul claro #6FB1E8 */
-  --bg: #070d18;
-  --bg-2: #0b1526;
-  --bg-3: #10203a;
+  --bg: #071630;        /* navy profundo, misma familia que el fondo del logo #0B1F3F */
+  --bg-2: #0B1F3F;
+  --bg-3: #12305a;
   --navy: #0B2A5B;
   --ink: #f2f4f8;
   --ink-2: #c5cddb;
@@ -19,6 +19,7 @@
   --concrete: #2b3037;
 
   --display: "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+  --brand: "Montserrat", "Arial Black", Arial, sans-serif;   /* tipografía del logo */
   --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --pad: clamp(20px, 5vw, 80px);
@@ -84,7 +85,7 @@ h1, h2, h3, p { margin: 0; }
 }
 .btn--accent:hover::after { transform: translateY(0); }
 .btn--accent:hover { transform: translateY(-2px); color: var(--navy); }
-.btn--ghost { border-color: rgba(255,255,255,.35); color: var(--ink); background: rgba(7,13,24,.25); backdrop-filter: blur(6px); }
+.btn--ghost { border-color: rgba(255,255,255,.35); color: var(--ink); background: rgba(7,22,48,.25); backdrop-filter: blur(6px); }
 .btn--ghost:hover { border-color: #fff; background: rgba(255,255,255,.08); }
 .btn--wa { background: #25d366; color: #052e16; }
 .btn--wa:hover { background: #3ee07d; transform: translateY(-2px); }
@@ -96,9 +97,10 @@ h1, h2, h3, p { margin: 0; }
   display: grid; place-items: center;
 }
 .loader__mark { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.loader__logo { width: 64px; height: 73px; --logo-navy: #fff; }
 .loader__line { width: 2px; height: 0; background: var(--accent-ink); animation: rope 1.1s var(--ease) forwards; }
 @keyframes rope { to { height: 90px; } }
-.loader__text { font-family: var(--display); font-weight: 700; letter-spacing: .3em; font-size: 14px; color: var(--muted); }
+.loader__text { font-family: var(--brand); font-weight: 800; letter-spacing: .12em; font-size: 15px; color: var(--ink); }
 
 /* ─── Nav ─── */
 .nav {
@@ -108,11 +110,11 @@ h1, h2, h3, p { margin: 0; }
   transition: background .4s, padding .4s, border-color .4s;
   border-bottom: 1px solid transparent;
 }
-.nav.is-solid { background: rgba(7,13,24,.82); backdrop-filter: blur(14px); border-color: var(--line); padding: 12px var(--pad); }
+.nav.is-solid { background: rgba(7,22,48,.82); backdrop-filter: blur(14px); border-color: var(--line); padding: 12px var(--pad); }
 .nav__brand { display: flex; align-items: center; gap: 12px; margin-right: auto; }
-.nav__logo { width: 38px; height: 38px; color: var(--ink); }
-.nav__name { font-family: var(--display); font-weight: 700; font-size: 20px; line-height: 1; letter-spacing: .04em; text-transform: uppercase; display: flex; flex-direction: column; }
-.nav__name small { font-family: var(--body); font-weight: 500; font-size: 10px; letter-spacing: .2em; color: var(--muted); margin-top: 4px; }
+.nav__logo { width: 34px; height: 39px; --logo-navy: #fff; flex: none; }
+.nav__name { font-family: var(--brand); font-weight: 800; font-size: 17px; line-height: 1; letter-spacing: .02em; text-transform: uppercase; display: flex; flex-direction: column; }
+.nav__name small { font-family: var(--brand); font-weight: 600; font-size: 8.5px; letter-spacing: .24em; color: var(--accent-ink); margin-top: 5px; }
 .nav__links { display: flex; gap: 28px; font-weight: 500; font-size: 15px; }
 .nav__links a { position: relative; padding: 6px 0; color: var(--ink-2); transition: color .3s; }
 .nav__links a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: 0; height: 2px; background: var(--accent); transition: right .35s var(--ease); }
@@ -150,8 +152,8 @@ h1, h2, h3, p { margin: 0; }
 .hero__shade {
   position: absolute; inset: 0;
   background:
-    linear-gradient(180deg, rgba(7,13,24,.55) 0%, rgba(7,13,24,.15) 35%, rgba(7,13,24,.35) 70%, var(--bg) 100%),
-    linear-gradient(90deg, rgba(7,13,24,.6) 0%, rgba(7,13,24,0) 60%);
+    linear-gradient(180deg, rgba(7,22,48,.55) 0%, rgba(7,22,48,.15) 35%, rgba(7,22,48,.35) 70%, var(--bg) 100%),
+    linear-gradient(90deg, rgba(7,22,48,.6) 0%, rgba(7,22,48,0) 60%);
 }
 .hero__grain {
   position: absolute; inset: -50%; opacity: .07; pointer-events: none; mix-blend-mode: overlay;
@@ -269,7 +271,7 @@ h1, h2, h3, p { margin: 0; }
 .proj:nth-child(4) { grid-column: 1 / span 12; }
 .proj__media { position: absolute; inset: 0; transition: transform .8s var(--ease); }
 .proj:hover .proj__media { transform: scale(1.03); }
-.proj__info { position: absolute; left: 0; right: 0; bottom: 0; padding: 26px; background: linear-gradient(180deg, transparent, rgba(7,13,24,.92)); z-index: 2; }
+.proj__info { position: absolute; left: 0; right: 0; bottom: 0; padding: 26px; background: linear-gradient(180deg, transparent, rgba(7,22,48,.92)); z-index: 2; }
 .proj__tag { font-family: var(--display); font-size: 13px; letter-spacing: .18em; text-transform: uppercase; color: var(--accent-ink); font-weight: 600; }
 .proj h3 { font-family: var(--display); font-weight: 700; font-size: clamp(26px, 2.4vw, 38px); text-transform: uppercase; line-height: 1; margin: 8px 0 6px; }
 .proj p { color: var(--ink-2); font-size: 15px; max-width: 60ch; }
@@ -334,7 +336,8 @@ h1, h2, h3, p { margin: 0; }
 .footer { position: relative; padding: 80px var(--pad) 0; border-top: 1px solid var(--line); overflow: hidden; }
 .footer__top { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px; max-width: 1400px; margin: 0 auto 60px; }
 .footer__brand p { color: var(--ink-2); margin-top: 14px; font-size: 15px; }
-.footer__logo { width: 44px; height: 44px; color: var(--ink); }
+.footer__brand p strong { display: block; font-family: var(--brand); font-weight: 800; color: var(--ink); font-size: 16px; letter-spacing: .02em; margin-bottom: 4px; }
+.footer__logo { width: 52px; height: 59px; --logo-navy: #fff; }
 .footer__col { display: flex; flex-direction: column; gap: 10px; font-size: 15px; color: var(--ink-2); }
 .footer__col span { font-family: var(--display); font-size: 13px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
 .footer__col a:hover { color: var(--accent-ink); }

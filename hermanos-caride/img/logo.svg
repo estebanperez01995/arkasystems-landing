@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 700" width="1400" height="700">
+<rect width="1400" height="700" fill="#ffffff"/>
+<g transform="translate(392 60) scale(0.5)">
+<path fill="#0B2A5B" d="M0 180L308 0l308 180v90L308 90 0 270z"/>
+<path fill="#0B2A5B" d="M0 330l308-130 308 130v90L308 290 0 420z"/>
+<path fill="#1E5BC6" d="M0 470l308-75 308 75v85L308 505 0 555z"/>
+<path fill="#6FB1E8" d="M0 610l308-30 308 30v85H0z"/>
+</g>
+<text x="700" y="520" text-anchor="middle" font-family="Montserrat, 'Arial Black', Arial, sans-serif" font-weight="800" font-size="118" letter-spacing="2" fill="#0B2A5B">HNOS. CARIDE</text>
+<text x="700" y="600" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-weight="600" font-size="46" letter-spacing="9" fill="#1E5BC6">TRABAJOS VERTICALES</text>
+</svg>
