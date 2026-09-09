@@ -235,13 +235,20 @@
     }
   });
 
-  /* ─── Imágenes reales: si existe img/<nombre>.jpg se carga; si no, queda el placeholder ─── */
+  /* ─── Medios reales: si existe img/<nombre>.jpg se carga; si además hay data-video, se reproduce videos/<nombre>.mp4 en bucle ─── */
   document.querySelectorAll("[data-img]").forEach((box) => {
     const name = box.dataset.img;
     const img = new Image();
     img.alt = ""; img.loading = "lazy"; img.decoding = "async";
     img.onload = () => { box.appendChild(img); box.classList.add("has-img"); ScrollTrigger.refresh(); };
-    img.src = `img/${name}.jpg`;
+    const M = window.CARIDE_MEDIA || {};   // opcional: mapa de data-URIs (se usa en la vista previa empaquetada)
+    img.src = (M.img && M.img[name]) || `img/${name}.jpg`;
+    if (box.dataset.video && !reduce) {
+      const v = document.createElement("video");
+      v.muted = true; v.loop = true; v.playsInline = true; v.autoplay = true; v.preload = "metadata";
+      v.poster = img.src; v.src = (M.video && M.video[box.dataset.video]) || `videos/${box.dataset.video}.mp4`;
+      v.addEventListener("canplay", () => { box.appendChild(v); box.classList.add("has-img", "has-video"); v.play().catch(() => {}); }, { once: true });
+    }
   });
 
   window.addEventListener("load", () => ScrollTrigger.refresh());
