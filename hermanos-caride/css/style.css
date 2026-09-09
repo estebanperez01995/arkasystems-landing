@@ -248,7 +248,8 @@ h1, h2, h3, p { margin: 0; }
   padding: 4px 8px; border: 1px dashed rgba(255,255,255,.25); border-radius: 3px;
 }
 [data-img].has-img::before, [data-img].has-img::after { display: none; }
-[data-img] img, [data-img] video { position: absolute; inset: -10% 0; width: 100%; height: 120%; object-fit: cover; will-change: transform; }
+[data-img] img, [data-img] video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.safety__media img { object-position: 50% 8%; }
 [data-img].has-video img { display: none; }
 
 /* ─── Stats ─── */

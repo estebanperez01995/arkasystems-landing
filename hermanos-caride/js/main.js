@@ -239,7 +239,7 @@
   document.querySelectorAll("[data-img]").forEach((box) => {
     const name = box.dataset.img;
     const img = new Image();
-    img.alt = ""; img.loading = "lazy"; img.decoding = "async";
+    img.alt = ""; img.decoding = "async"; // sin loading="lazy": una imagen fuera del DOM no se carga en Chrome
     img.onload = () => { box.appendChild(img); box.classList.add("has-img"); ScrollTrigger.refresh(); };
     const M = window.CARIDE_MEDIA || {};   // opcional: mapa de data-URIs (se usa en la vista previa empaquetada)
     img.src = (M.img && M.img[name]) || `img/${name}.jpg`;
