@@ -41,7 +41,7 @@ Respeta `prefers-reduced-motion`: sin animaciones para quien lo tenga activado.
 5. **Logo** → sustituir el símbolo `#logo-mark` (SVG al final de `index.html`) por el logo real del cliente, y `img/favicon.svg`.
 6. **Confirmar con el cliente** los textos marcados como *CONFIRMAR* (certificaciones en Seguridad, email) y las estadísticas de la sección Números.
 7. **Legal** → redactar aviso legal y privacidad (ahora los enlaces muestran un aviso).
-8. **Deploy** → Cloudflare Pages o Vercel, sin build, directorio de salida `hermanos-caride/` (o mover la carpeta a su propio repo).
+8. **Deploy** → ver sección "Publicar en Vercel" más abajo.
 
 ## Modo "scrub" del vídeo
 
@@ -53,3 +53,16 @@ En `index.html`, `heroVideoMode` controla el hero. Por defecto `"loop"`: el víd
 npx http-server -p 8080 .
 # abrir http://localhost:8080/hermanos-caride/
 ```
+
+## Publicar en Vercel (gratis)
+
+1. Entra en [vercel.com/new](https://vercel.com/new) con la cuenta de GitHub e importa el repositorio `arkasystems-landing`.
+2. En la pantalla de configuración:
+   - **Framework Preset**: Other
+   - **Root Directory**: `hermanos-caride`  (pulsar *Edit* y elegir la carpeta)
+   - Build Command y Output Directory: vacíos
+3. Deploy. Vercel devuelve una URL tipo `https://hermanos-caride.vercel.app`.
+4. Como la web está en la rama `claude/vertical-work-company-website-u4j4ua`, en *Settings → Git → Production Branch* poner esa rama (o hacer merge a `main`).
+5. Dominio propio: *Settings → Domains* → añadir `hermanoscaridefernandez.com` y seguir las instrucciones de DNS.
+
+`vercel.json` ya incluye caché larga para vídeos e imágenes y URLs limpias.
