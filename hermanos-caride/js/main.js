@@ -65,9 +65,23 @@
     lenis && lenis.stop();
   });
 
+  /* ─── Utilidades de vídeo para móvil ───
+     iOS Safari no reproduce <video> con src "data:" (vista previa empaquetada): se convierte a blob:.
+     Además, si el navegador bloquea el autoplay (modo ahorro de batería, datos), se reintenta al primer toque. */
+  const toPlayable = async (src) => {
+    if (!src || !src.startsWith("data:")) return src;
+    try { const b = await (await fetch(src)).blob(); return URL.createObjectURL(b); } catch (e) { return src; }
+  };
+  const autoplayVideos = new Set();
+  const kickVideos = () => { autoplayVideos.forEach((v) => { if (v.paused) v.play().catch(() => {}); }); };
+  ["touchstart", "touchend", "click", "scroll"].forEach((ev) => window.addEventListener(ev, kickVideos, { passive: true }));
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) kickVideos(); });
+
   /* ─── Preloader + intro hero ─── */
   const loader = document.getElementById("loader");
   const heroVideo = document.getElementById("heroVideo");
+  heroVideo.setAttribute("webkit-playsinline", ""); heroVideo.muted = true; heroVideo.defaultMuted = true;
+  autoplayVideos.add(heroVideo);
 
   function intro() {
     const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
@@ -88,10 +102,14 @@
 
   if (CFG.heroVideoMode === "loop" || reduce) {
     // Reproducción normal en bucle con zoom/parallax al hacer scroll.
-    if (!isDataSrc && heroSource && !heroSource.getAttribute("src").endsWith("hero.mp4")) { heroSource.src = "videos/hero.mp4"; heroVideo.load(); }
+    // En móvil se sirve la versión 720p (1,6 MB) para que arranque rápido con datos.
+    const heroFile = isMobile() ? "videos/hero-720.mp4" : "videos/hero.mp4";
+    if (!isDataSrc && heroSource && !heroSource.getAttribute("src").endsWith(heroFile)) { heroSource.src = heroFile; heroVideo.load(); }
     heroVideo.loop = true; heroVideo.autoplay = true;
     const tryPlay = () => heroVideo.play().catch(() => {});
-    if (heroVideo.readyState >= 2) tryPlay(); else heroVideo.addEventListener("canplay", tryPlay, { once: true });
+    if (isDataSrc) {
+      toPlayable(heroSource.getAttribute("src")).then((u) => { heroSource.remove(); heroVideo.src = u; heroVideo.load(); heroVideo.addEventListener("canplay", tryPlay, { once: true }); });
+    } else if (heroVideo.readyState >= 2) tryPlay(); else heroVideo.addEventListener("canplay", tryPlay, { once: true });
     if (!reduce) {
       gsap.to(".hero__video", { scale: 1.15, yPercent: 8, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
       gsap.to(".hero__content", { yPercent: -25, opacity: 0, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "70% top", scrub: true } });
@@ -246,8 +264,10 @@
     if (box.dataset.video && !reduce) {
       const v = document.createElement("video");
       v.muted = true; v.loop = true; v.playsInline = true; v.autoplay = true; v.preload = "metadata";
-      v.poster = img.src; v.src = (M.video && M.video[box.dataset.video]) || `videos/${box.dataset.video}.mp4`;
-      v.addEventListener("canplay", () => { box.appendChild(v); box.classList.add("has-img", "has-video"); v.play().catch(() => {}); }, { once: true });
+      v.setAttribute("webkit-playsinline", ""); v.defaultMuted = true;
+      v.poster = img.src;
+      v.addEventListener("canplay", () => { box.appendChild(v); box.classList.add("has-img", "has-video"); autoplayVideos.add(v); v.play().catch(() => {}); }, { once: true });
+      toPlayable((M.video && M.video[box.dataset.video]) || `videos/${box.dataset.video}.mp4`).then((u) => { v.src = u; v.load(); });
     }
   });
 
