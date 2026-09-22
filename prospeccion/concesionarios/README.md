@@ -1,97 +1,95 @@
 # Prospección de concesionarios (coches y motos) — España
 
-Pipeline para sacar de Google Maps los concesionarios de toda España que **tienen web** y además
-**email, WhatsApp o redes**, y cargarlos en `CRM PROSPECCION` en una pestaña nueva llamada
-`consecionarias`.
+Saca de **Google Maps** todos los concesionarios de las ciudades que le pongas, entra **una por una
+en sus webs** para pescar el **WhatsApp**, el email y las redes, y lo carga en `CRM PROSPECCION` en
+una pestaña nueva llamada `consecionarias`.
 
-> **Por qué no está ejecutado ya:** la sesión de Claude en la nube donde se escribió esto tiene la
-> red de salida restringida por política del entorno (solo registros de paquetes y las APIs de
-> Anthropic). `api.apify.com`, `google.com` y cualquier web devuelven 403 desde ahí. El scraping hay
-> que lanzarlo desde un sitio con red: tu Mac, tu n8n o un entorno con la política de red abierta.
+**Sin Apify y sin APIs de pago.** Conduce un Chromium real con Playwright.
 
-## Requisitos
+> **Por qué no está ejecutado.** La sesión de Claude en la nube donde se escribió esto no tiene
+> salida a internet: el proxy del entorno rechaza el CONNECT a cualquier host que no sea un registro
+> de paquetes o la API de Anthropic. Chromium arranca perfectamente, pero al navegar devuelve
+> `net::ERR_TUNNEL_CONNECTION_FAILED`. Comprobado con Google Maps, Bing y DuckDuckGo.
+> **Todo lo que no es la red está escrito y probado** (ver `test_extraccion.py`).
 
-- Cuenta de Apify con saldo (el actor `compass/crawler-google-places` es de pago por resultado).
-- Python 3.9+.
-- Para la subida a Sheets: `pip install gspread google-auth` y una service account con permiso de
-  edición sobre la hoja (o `gspread.oauth()` con tu usuario).
-
-## Paso 1 — Scraping
-
-1. Abre el actor **Google Maps Scraper** (`compass/crawler-google-places`) en Apify.
-2. Pega `apify_input.json` como input.
-3. Lanza y espera. Descarga el dataset **en formato JSON** → `dataset.json`.
-
-Claves del input, y por qué:
-
-| Campo | Valor | Motivo |
-|---|---|---|
-| `website` | `withWebsite` | descarta de entrada los que no tienen web (requisito tuyo) |
-| `scrapeContacts` | `true` | es lo que saca **emails y perfiles de redes** entrando en la web del negocio |
-| `maxCrawledPlacesPerSearch` | `120` | 5 términos × 120 ≈ 600 sitios por zona antes de filtrar |
-| `language` / `countryCode` | `es` | resultados y categorías en español |
-
-**Cobertura de todo España.** Si `locationQuery: "Spain"` no da profundidad suficiente (Google
-limita resultados por búsqueda), relanza por provincias. Lista lista para pegar en `locationQuery`,
-una ejecución por bloque:
-
-```
-Madrid · Barcelona · Valencia · Sevilla · Zaragoza · Málaga · Murcia · Palma · Las Palmas ·
-Bilbao · Alicante · Córdoba · Valladolid · Vigo · Gijón · Granada · A Coruña · Vitoria ·
-Santa Cruz de Tenerife · Pamplona · Almería · San Sebastián · Santander · Castellón · Burgos ·
-Albacete · Salamanca · Logroño · Badajoz · Huelva · Lleida · Tarragona · León · Cádiz · Jaén ·
-Ourense · Girona · Lugo · Cáceres · Toledo · Ciudad Real · Guadalajara · Cuenca · Ávila ·
-Segovia · Soria · Zamora · Palencia · Huesca · Teruel · Mérida · Melilla · Ceuta
-```
-
-Con las 10 primeras provincias suele bastar para pasar de 200 filas contactables. Empieza por ahí y
-amplía solo si hace falta: cada resultado se paga.
-
-## Paso 2 — Filtrado
+## Ejecutar
 
 ```bash
-python3 filtrar.py dataset.json -o concesionarias.csv
+pip install playwright && playwright install chromium   # solo la primera vez
+python3 1_buscar_maps.py --ciudades ciudades.txt --out maps.json
+python3 2_visitar_webs.py maps.json -o concesionarias.csv
+python3 3_subir_sheets.py concesionarias.csv
 ```
 
-Qué hace:
+Los tres pasos **se pueden cortar y reanudar**: el 1 guarda después de cada búsqueda y no repite las
+ya hechas; el 2 cachea cada web visitada en `webs_cache.json`.
 
-- Descarta lo que no tiene web.
-- Descarta lo que tiene web pero **ni email, ni WhatsApp, ni Instagram/Facebook**.
-- Deduplica por nombre + dominio.
-- Normaliza el teléfono a `+34XXXXXXXXX` y marca como `whatsapp` **solo los móviles** (6 y 7): un
-  fijo en WhatsApp es un envío quemado.
-- Clasifica `tipo` en `coches` / `motos` / `ambos`.
-- Marca `vende_online` cuando la web enseña señales reales de venta o reserva online
-  (`/stock`, "reserva online", "compra online", financiación online, carrito…).
-- Marca `es_cadena` con una lista de grupos conocidos, para que puedas respetar el
-  `solo_no_cadena: TRUE` que ya tienes en la configuración del CRM.
-- Sale con error si no llega al mínimo de 200, para que te enteres antes de subir nada.
+### Paso 1 — Google Maps (`1_buscar_maps.py`)
 
-Imprime un resumen con cuántos descartó y por qué.
+Por cada ciudad de `ciudades.txt` y cada uno de los 4 términos (`concesionario de coches`,
+`concesionario oficial`, `venta de coches de ocasión`, `concesionario de motos`): abre la búsqueda,
+acepta el muro de cookies, **baja por el panel de resultados** hasta que deja de crecer o llega al
+final, y entra en cada ficha a sacar nombre, categoría, dirección, teléfono, web, rating y reseñas.
 
-## Paso 3 — Carga en el CRM
+- `--por-busqueda 40` (por defecto): tope de fichas por término y ciudad. 25 ciudades × 4 términos ×
+  40 ≈ 4.000 fichas como techo. Con las 10 primeras ciudades ya se pasa de 200 de sobra.
+- `--headful` abre el navegador con ventana, para ver qué pasa si algo falla.
+
+> **Este es el paso frágil.** Google cambia el DOM de Maps cada pocos meses. Los selectores llevan
+> alternativas (`h1.DUwDvf` → `h1`, `button[data-item-id="address"]` → tooltip de copiar…), pero si
+> un día devuelve fichas vacías, es aquí y se arregla mirando con `--headful`. Ve despacio a
+> propósito (esperas aleatorias de 0,8–3 s): si aceleras, Google mete captcha.
+
+### Paso 2 — Las webs (`2_visitar_webs.py`)
+
+Esta es la parte que de verdad te interesa: **de dónde sale el WhatsApp**.
+
+Se visita con navegador y no con `curl` porque **el botón de WhatsApp de la mayoría de las webs lo
+inyecta un widget por JavaScript**: en el HTML crudo no existe. Por cada web se prueban la home y
+luego `/contacto`, `/contactar`, `/contact`, `/es/contacto`, `/quienes-somos`, y se leen tanto el
+HTML renderizado como los `href` de todos los enlaces.
+
+Formatos de WhatsApp que reconoce, en orden de fiabilidad:
+
+| Origen | Qué detecta |
+|---|---|
+| `web-enlace` | `wa.me/34…`, `api.whatsapp.com/send?phone=…`, `whatsapp://send?phone=…`, `web.whatsapp.com/send?phone=…` |
+| `web-texto` | "WhatsApp: 611 22 33 44" en el texto, hasta 60 caracteres de distancia |
+| `maps-movil` | sin nada en la web, pero el teléfono de Maps es móvil (6 o 7) |
+
+Los fijos (9…) se guardan como `telefono` pero **no** como WhatsApp salvo que la web los publique
+explícitamente como tal: un envío a un fijo es un envío quemado.
+
+También saca email (priorizando `info@`, `contacto@`, `ventas@`, y descartando basura tipo
+`@sentry`, `logo@2x`), Instagram, Facebook, LinkedIn, TikTok y YouTube (descartando enlaces de
+compartir y de login), y marca `vende_online` cuando la web enseña señales reales de venta o reserva
+online.
+
+El CSV sale **ordenado con los que tienen WhatsApp primero**. Se cargan todos los encontrados, con
+WhatsApp y sin él, como pediste.
+
+### Paso 3 — El CRM (`3_subir_sheets.py`)
 
 ```bash
 export GOOGLE_APPLICATION_CREDENTIALS=/ruta/service-account.json
-python3 subir_sheets.py concesionarias.csv
+python3 3_subir_sheets.py concesionarias.csv
 ```
 
-Crea la pestaña `consecionarias` en `CRM PROSPECCION` (ID ya puesto en el script), escribe las filas,
-congela la cabecera y te devuelve el enlace directo. Si la pestaña ya existe, **aborta** en vez de
-pisarla; para reemplazarla, `--reemplazar`.
+Crea la pestaña `consecionarias` en `CRM PROSPECCION`, escribe las filas y congela la cabecera. Si
+la pestaña existe, aborta en vez de pisarla (`--reemplazar` para forzar).
 
-**Plan B sin credenciales:** en la hoja, `Archivo → Importar → Subir → concesionarias.csv` y elige
-*"Insertar hoja(s) nueva(s)"*. Luego renombra la pestaña a `consecionarias`.
+**Sin credenciales:** en la hoja, `Archivo → Importar → Subir → concesionarias.csv` →
+*"Insertar hoja(s) nueva(s)"*, y renombrar la pestaña a `consecionarias`.
 
-## Paso 4 — Antes de disparar mensajes
+## Comprobar que la extracción funciona (sin red)
 
-La configuración actual del CRM apunta a otro sector y está en modo prueba:
+```bash
+python3 test_extraccion.py
+```
 
-- `pestana_leads: clinicas dentales` → cambiar a `consecionarias`.
-- `modo_prueba: TRUE` y `numero_prueba: 34671286513` → así todo se envía a tu propio número.
-- `solo_no_cadena: TRUE` → con la columna `es_cadena` que genera el filtro, esto ya funciona.
-- La variante de mensaje `C1 / demo-carritos` es de e-commerce: para concesionarios hay que dar de
-  alta una variante nueva con los textos de la sección 11 de `OFERTA-concesionarios.md`.
+17 casos: los cuatro formatos de enlace de WhatsApp, el widget inyectado por JS, el número en texto
+plano, el fijo, emails con basura mezclada, redes con enlaces de compartir, clasificación
+coches/motos/ambos y normalización de teléfonos. Todos pasan.
 
 ## Columnas que genera
 
@@ -102,10 +100,12 @@ aviso · chip · fecha_envio · variante`
 
 Las cuatro últimas van vacías: las rellena tu automatización, igual que en la pestaña de clínicas.
 
-## Aviso sobre los nombres de campo de Apify
+## Antes de disparar mensajes
 
-Los nombres de campo del input y del output (`scrapeContacts`, `socialProfiles`, `emails`,
-`contactDetails`…) son los del actor en el momento de escribir esto, y **no se han podido verificar
-contra la documentación en vivo** porque el entorno no tiene salida a internet. Si el actor cambió
-algún nombre, `filtrar.py` devolverá menos filas de lo esperado: mira el resumen que imprime y
-ajusta las claves en las funciones `main()` y `vende_online()`.
+La configuración actual del CRM apunta a otro sector y está en modo prueba:
+
+- `pestana_leads: clinicas dentales` → cambiar a `consecionarias`.
+- `modo_prueba: TRUE` con `numero_prueba: 34671286513` → así todo va a tu propio número.
+- `solo_no_cadena: TRUE` → funciona con la columna `es_cadena` que genera el paso 2.
+- La variante `C1 / demo-carritos` es de e-commerce: alta una variante nueva con los textos de la
+  sección 11 de `OFERTA-concesionarios.md`.

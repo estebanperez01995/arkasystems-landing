@@ -1,0 +1,27 @@
+# Una ciudad por linea. Empieza por las 10 primeras: suelen bastar para pasar de 200.
+# Anade mas y relanza el paso 1: no repite las busquedas ya hechas.
+Madrid
+Barcelona
+Valencia
+Sevilla
+Zaragoza
+Malaga
+Murcia
+Bilbao
+Alicante
+Valladolid
+Vigo
+Gijon
+Granada
+A Coruna
+Palma de Mallorca
+Las Palmas de Gran Canaria
+Cordoba
+Vitoria
+Pamplona
+Santander
+Tarragona
+Castellon
+Almeria
+Burgos
+Salamanca
