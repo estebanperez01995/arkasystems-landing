@@ -71,32 +71,48 @@ Hay **dos capas de precio** y no son la misma cosa. No las mezcles.
 concesionario pierde al mes en ventas no atendidas) **antes** del número chico (la inversión), y eso
 solo funciona en la llamada, después de la demo.
 
-### Los números propuestos para este sector — PENDIENTE DE TU VALIDACIÓN
+### Los números — DECIDIDOS, no se tocan
 
-La variante ropa va a 200 / 300 / 400 €/mes con pago único de 1.000 / 1.500 / 2.000 €. Para
-concesionarios se propone **subir el escalón**, por tres razones concretas:
-
-1. **El margen por unidad no se parece.** Recuperar *una sola venta al año* deja 1.500–3.000 € de
-   margen: paga el nivel de entrada entero. En ropa hacen falta decenas de prendas para eso.
-2. **La implementación es más pesada.** Hay que conectar portales, formularios web, stock (DMS o
-   feed de la web) y, en oficiales, convivir con el CRM de marca.
-3. **El interlocutor compra distinto.** Un gerente de concesionario descarta por barato: 200 €/mes
-   para gestionar leads de 20.000 € suena a juguete.
+**Son los mismos que en tiendas de ropa. Ese es el arma, no un descuido.**
 
 | Nivel | Mensualidad (web) | Pago único (solo llamada) |
 |---|---|---|
-| 01 — Comercial 24/7 | **400 €/mes** | 2.000 € |
-| 02 — Cartera | **600 €/mes** | 3.000 € |
-| 03 — Sistema Pro | **900 €/mes** | 4.500 € |
+| 01 — Comercial 24/7 | **200 €/mes** | 1.000 € |
+| 02 — Cartera | **300 €/mes** | 1.500 € |
+| 03 — Sistema Pro | **400 €/mes** | 2.000 € |
 
-**Escalera de entrada (solo llamada, nunca en la web):** sin casos del sector todavía, el pago único
-arranca abajo y sube con cada cliente: 1.000 € → 1.400 € → 1.700 € → 2.000 €. **La mensualidad no
-baja nunca**: es el piso del negocio.
+**Escalera de entrada (solo llamada, nunca en la web):** 500 € → 700 € → 850 € → 1.000 €, igual que
+en ropa. **La mensualidad no baja nunca**: es el piso del negocio.
 
-> **Decisión tuya, no del agente:** si prefieres entrar barato para cerrar los dos primeros clientes,
-> la alternativa es clonar los números de ropa (200/300/400 €). Lo que **no** hay que hacer es
-> mezclar: los importes de la landing, los de la llamada y los de la escalera tienen que contarse
-> siempre en el mismo orden. Hasta que confirmes, la landing se monta con 400/600/900 €.
+**Por qué este sector con este precio.** El mismo importe que en una tienda de ropa, puesto delante
+de un negocio cuyo margen por unidad es de 1.500–3.000 €, deja de ser una inversión y pasa a ser una
+obviedad. Las cuentas exactas, para decirlas sin exagerar ni quedarse corto:
+
+| | Nivel 01 | Nivel 02 | Nivel 03 |
+|---|---|---|---|
+| Implementación | 1.000 € | 1.500 € | 2.000 € |
+| Año 1 completo (implementación + 11 meses, el primero va gratis) | 3.200 € | 4.800 € | 6.400 € |
+| Ventas recuperadas que hacen falta al año (margen 1.800 €) | **2** | **3** | **4** |
+
+Dicho con precisión, que es como aguanta una objeción: **la primera venta que recupere el sistema
+paga la implementación entera** — 1.800 € de margen contra 1.500 € de implementación — y deja de
+sobra para los primeros meses de mantenimiento. El año completo se cubre con dos o tres ventas. En
+un concesionario que hace decenas de operaciones al mes, eso no es una apuesta: es aritmética.
+
+No hace falta inflarlo. Redondear "una venta al año" a "una venta y ya está todo pagado para
+siempre" es justo el tipo de frase que un gerente desmonta en diez segundos y te tira la llamada.
+
+**Las dos frases exactas para la llamada** (la segunda solo después de haber dicho el número grande):
+
+> Con que el sistema te recupere **una sola venta**, ya está pagado.
+
+> Tu margen por coche es de unos X €. El sistema completo son 1.500 € y 300 € al mes. Recupera una
+> venta al año y sales ganando; nosotros esperamos que te recupere una al mes.
+
+**Si te dicen que es barato** — pasa en este sector, no en ropa —: no subas el precio en la llamada.
+La respuesta es que el precio es bajo porque el sistema es el mismo que ya está funcionando en otros
+negocios, no porque sea menos sistema; y que los cupos son dos implementaciones al mes. El precio
+bajo con cupo limitado se lee como oportunidad. El precio bajo sin cupo se lee como barato.
 
 ---
 
@@ -106,7 +122,7 @@ Cada nivel **incluye todo el anterior**. Son un menú interno: en la llamada se 
 En la landing se muestran los tres, con el 02 marcado como recomendado.
 
 ### Nivel 1 — Comercial 24/7
-**Mensualidad: 400 €/mes · Pago único (solo llamada): 2.000 €**
+**Mensualidad: 200 €/mes · Pago único (solo llamada): 1.000 €**
 
 Atiende en menos de un minuto todo lo que entra: leads de los portales, formularios de la web,
 WhatsApp y los mensajes de redes. Responde con el stock real — modelo, año, kilómetros, precio,
@@ -119,7 +135,7 @@ de su coche, lo entiende igual.
 de la noche de un domingo, no el lunes a las diez cuando ya ha pedido precio en otros tres sitios.
 
 ### Nivel 2 — Cartera (= Nivel 1 + esto)
-**Mensualidad: 600 €/mes · Pago único (solo llamada): 3.000 €**
+**Mensualidad: 300 €/mes · Pago único (solo llamada): 1.500 €**
 
 Seguimiento automático del comprador que preguntó y no compró, durante las semanas que dura de
 verdad la decisión: cuando baja de precio el modelo que miró, cuando entra uno igual con menos
@@ -131,7 +147,7 @@ difusiones por la API oficial de WhatsApp: km 0, campañas de marca, liquidació
 que entran por la puerta.
 
 ### Nivel 3 — Sistema Pro (= Nivel 2 + esto)
-**Mensualidad: 900 €/mes · Pago único (solo llamada): 4.500 €**
+**Mensualidad: 400 €/mes · Pago único (solo llamada): 2.000 €**
 
 Taller y postventa trabajando solos: avisos de revisión, de ITV, de fin de garantía y de cambio de
 neumáticos, con la cita agendada directamente en la agenda del taller. Stock en tiempo real
@@ -359,9 +375,9 @@ implementaciones al mes) y las tres tarjetas con `desde` + importe + `/mes` + "+
 
 | Tarjeta | Título | Blurb | Desde |
 |---|---|---|---|
-| 01 — Comercial 24/7 | Ningún lead sin contestar | Para concesionarios que reciben leads de portales y web y no llegan a contestarlos a tiempo. | **400 €/mes** |
-| 02 — Cartera | El sistema completo | Atención, seguimiento y tu cartera de compradores trabajando. Para los que pierden ventas en el "me lo pienso". | **600 €/mes** |
-| 03 — Sistema Pro | Venta, taller y stock en vivo | Para concesionarios con taller, varias marcas o más de una sede. | **900 €/mes** |
+| 01 — Comercial 24/7 | Ningún lead sin contestar | Para concesionarios que reciben leads de portales y web y no llegan a contestarlos a tiempo. | **200 €/mes** |
+| 02 — Cartera | El sistema completo | Atención, seguimiento y tu cartera de compradores trabajando. Para los que pierden ventas en el "me lo pienso". | **300 €/mes** |
+| 03 — Sistema Pro | Venta, taller y stock en vivo | Para concesionarios con taller, varias marcas o más de una sede. | **400 €/mes** |
 
 Bullets de cada tarjeta: los del nivel correspondiente en la sección 3, escritos en resultado. El 02
 y el 03 empiezan con "Todo lo del plan anterior, más:". Cada tarjeta cierra con la línea de
@@ -504,7 +520,7 @@ de un minuto" se cumple.
 - [ ] "Inversión" en lugar de "precio" en toda la página.
 - [ ] Ninguna frase que insinúe que el sistema sustituye a los comerciales.
 - [ ] Los tres planes muestran mensualidad + "implementación única a medida". **El pago único
-      (2.000/3.000/4.500 €) no aparece en ningún sitio de la web.**
+      (1.000/1.500/2.000 €) no aparece en ningún sitio de la web.**
 - [ ] Ningún caso, testimonio, logo ni métrica de un concesionario inventado.
 - [ ] Toda cifra de resultado etiquetada como estimación.
 - [ ] `canonical`, `og:url` y `twitter:*` apuntan a la URL de la página nueva.
@@ -516,7 +532,6 @@ de un minuto" se cumple.
 
 ## 13. Pendientes que necesitan material que no existe todavía
 
-- Confirmar los importes de la sección 2 (400/600/900 € frente a clonar los de ropa).
 - Vídeo de demo con un concesionario (el equivalente a `videos/caso-voraldent.mp4`).
 - Imagen OG propia de la variante (1200×630).
 - Primer cliente del sector en producción, para convertir `#caso` en un caso real.
