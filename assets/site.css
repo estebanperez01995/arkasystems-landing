@@ -416,7 +416,7 @@ section.block + section.block::before {
 
 .hero-pause {
   position: absolute;
-  right: var(--gutter);
+  left: var(--gutter);
   bottom: 18px;
   z-index: 2;
   width: 44px; height: 44px;
