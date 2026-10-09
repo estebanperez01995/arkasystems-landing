@@ -72,9 +72,7 @@
 
   /* 4 · Entrada del hero (una vez, al cargar) */
   var hero = $('.hero');
-  if (hero) {
-    w.requestAnimationFrame(function () { w.requestAnimationFrame(function () { hero.classList.add('is-in'); }); });
-  }
+  if (hero && !hero.classList.contains('is-in')) hero.classList.add('is-in'); /* la pone un script inline tras el hero; esto es el respaldo */
 
   /* 5 · Vídeos del hero: uno activo, rotación solo visible, pausa real */
   var vids = $$('.hero-vid');

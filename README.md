@@ -49,6 +49,18 @@ Los textos de la página están tal cual se aprobaron; el rediseño del 9-oct no
 - `prefers-reduced-motion`: sin desplazamientos ni blur, vídeos en póster, demo en estado final.
 - Vídeos del hero: uno activo, rotación cada 10 s solo con la pestaña visible, botón de pausa.
 - Arky (ElevenLabs) se carga después de `load`, en idle, para no bloquear el primer render.
+- Fuentes autohospedadas en `assets/fonts/` (`fonts.css`), sin llamadas a Google Fonts.
+
+## SEO
+
+- Título con la keyword primero (`Automatización con IA para empresas en Barcelona | Arka Systems`),
+  meta description sin condiciones comerciales, canonical, hreflang, Open Graph y Twitter.
+- JSON-LD: ProfessionalService, FAQPage (generado desde el FAQ visible: si cambias una
+  pregunta en el HTML, cambia también el bloque) y VideoObject.
+- `index-dental.html` lleva `noindex`; las legales `noindex, follow`; `sitemap.xml` con las tres
+  URLs indexables.
+- Lo que falta para posicionar de verdad son páginas por nicho y un perfil de Google Business;
+  esta página sola compite poco.
 
 ## Analítica
 
@@ -66,9 +78,6 @@ con dos commits seguidos).
 
 - Cifras del caso Voraldent: usar las medidas de la ficha (85 % confirmación, 2 % ausencias
   sobre 2.250 citas, 30 de 200 recalls) y etiquetar "más de 15 h" como estimación.
-- Garantía: la web dice "si no hay impacto medible, no pagas la implementación"; la oferta
-  vigente es "30 días: si decides que no sigue, te devuelvo lo pagado". Aparece en hero,
-  meta description, FAQ, JSON-LD y paso 03.
 - Handle de Instagram (`esteban.arkasystems` → verificar `estebanperez.ia`), "bot" en el FAQ,
   "Casos reales" en plural con un caso, mayúsculas del párrafo de fundadores.
 - `index-dental.html`: borrar o redirigir.

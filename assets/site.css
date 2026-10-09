@@ -214,17 +214,6 @@ section.block + section.block::before {
 
 .cta-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 
-.micro {
-  margin-top: 18px;
-  color: var(--ink-3);
-  font-size: 13px;
-  font-family: var(--font-mono);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 14px;
-  line-height: 1.5;
-}
-.micro span:not(:last-child)::after { content: "·"; margin-left: 14px; color: var(--ink-4); }
 
 /* ---------- Nav ---------- */
 .nav {
@@ -437,14 +426,14 @@ section.block + section.block::before {
 .hero-pause[aria-pressed="true"] .i-play { display: block; }
 
 /* Entrada del hero: una sola coreografía, corta */
+/* Sin opacidad: el titular es el LCP y tiene que pintarse desde el primer frame */
 .js .hero [data-enter] {
-  opacity: 0;
   transform: translateY(10px);
   filter: blur(6px);
-  transition: opacity var(--dur-4) var(--ease-out), transform var(--dur-4) var(--ease-out), filter var(--dur-4) var(--ease-out);
-  transition-delay: calc(var(--i, 0) * 80ms);
+  transition: transform var(--dur-4) var(--ease-out), filter var(--dur-4) var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 70ms);
 }
-.js .hero.is-in [data-enter] { opacity: 1; transform: none; filter: none; }
+.js .hero.is-in [data-enter] { transform: none; filter: none; }
 
 @media (min-width: 980px) {
   .hero-grid { grid-template-columns: 1.05fr 0.95fr; }
