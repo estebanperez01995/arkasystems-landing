@@ -1656,6 +1656,40 @@ window.ARKA_LINKS = {
 
 <!-- ============ SERVICIOS ============ -->
 <section class="block" id="servicios">
+
+  <!-- ===== Vídeo inmersivo scroll-scrub (marco vertical, recorte cover) ===== -->
+  <style>
+    .svc-scrub { position: relative; height: 220vh; }
+    .svc-scrub-sticky { position: sticky; top: 0; height: 100vh; display: grid; place-items: center; overflow: hidden; }
+    .svc-scrub-frame {
+      position: relative;
+      width: min(90vw, 430px);
+      aspect-ratio: 9 / 16;
+      border-radius: 22px;
+      overflow: hidden;
+      background: #000;
+      box-shadow: 0 30px 80px -20px rgba(0,0,0,.7), 0 0 0 1px var(--line-soft);
+    }
+    .svc-scrub-vid { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+    .svc-scrub-frame::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(180deg, rgba(0,0,0,.10) 0%, transparent 20%, transparent 74%, rgba(0,0,0,.34) 100%);
+    }
+    /* Fallback (iOS / reduced-motion / sin scrub): bloque normal, sin spacer gigante */
+    .svc-scrub.no-scrub { height: auto; }
+    .svc-scrub.no-scrub .svc-scrub-sticky { position: static; height: auto; padding: 40px 0; }
+    @media (max-width: 720px) { .svc-scrub { height: 180vh; } }
+  </style>
+  <div class="svc-scrub" aria-hidden="true">
+    <div class="svc-scrub-sticky">
+      <div class="svc-scrub-frame">
+        <video class="svc-scrub-vid" muted playsinline preload="auto" tabindex="-1">
+          <source src="videos/videoscroll.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+  </div>
+
   <div class="container">
     <div class="section-head">
       <span class="label">Qué implementamos</span>
@@ -1882,6 +1916,64 @@ window.ARKA_LINKS = {
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
   }
+})();
+</script>
+
+<script>
+/* Vídeo inmersivo de Servicios: scroll-scrub con suavizado + fallback robusto */
+(function () {
+  const scrub = document.querySelector('.svc-scrub');
+  const vid = scrub && scrub.querySelector('.svc-scrub-vid');
+  if (!scrub || !vid) return;
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isIOS = /iP(hone|ad|od)/.test(navigator.userAgent) ||
+                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+  function fallbackLoop() {
+    scrub.classList.add('no-scrub');
+    vid.loop = true;
+    vid.setAttribute('autoplay', '');
+    const p = vid.play();
+    if (p && p.catch) p.catch(function () {});
+  }
+
+  // iOS Safari no hace seeking fino → autoplay loop (suave, nunca roto).
+  if (reduce || isIOS) { fallbackLoop(); return; }
+
+  let duration = 0, target = 0, current = 0, ready = false;
+
+  function computeTarget() {
+    const rect = scrub.getBoundingClientRect();
+    const total = rect.height - window.innerHeight;
+    const p = total > 0 ? Math.max(0, Math.min(1, (-rect.top) / total)) : 0;
+    target = p * duration;
+  }
+
+  function tick() {
+    current += (target - current) * 0.12;      // suavizado (lerp)
+    if (Math.abs(target - current) < 0.004) current = target;
+    if (ready && Math.abs(vid.currentTime - current) > 0.008) {
+      try { vid.currentTime = current; } catch (e) {}
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function start() {
+    duration = vid.duration;
+    if (!duration || !isFinite(duration)) { fallbackLoop(); return; }
+    try { vid.pause(); } catch (e) {}
+    ready = true;
+    computeTarget();
+    requestAnimationFrame(tick);
+  }
+
+  vid.addEventListener('loadedmetadata', start);
+  vid.addEventListener('error', fallbackLoop);
+  window.addEventListener('scroll', computeTarget, { passive: true });
+  window.addEventListener('resize', computeTarget);
+  // Si los metadatos ya estaban listos antes de enganchar el listener:
+  if (vid.readyState >= 1 && !ready) start();
 })();
 </script>
 
