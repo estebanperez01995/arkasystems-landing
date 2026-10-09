@@ -81,7 +81,8 @@
   if (hero && vids.length) {
     var vi = 0, rot = null, userPaused = reduce.matches, heroVisible = true;
     var pauseBtn = $('.hero-pause');
-    var canPlay = function () { return !userPaused && !reduce.matches && heroVisible && !d.hidden; };
+    var wide = w.matchMedia('(min-width: 980px)');
+    var canPlay = function () { return wide.matches && !userPaused && !reduce.matches && heroVisible && !d.hidden; };
     var showVid = function (i) {
       vids.forEach(function (v, j) {
         if (j === i) {
@@ -110,6 +111,7 @@
       new IntersectionObserver(function (entries) { heroVisible = entries[0].isIntersecting; sync(); }, { threshold: 0.1 }).observe(hero);
     }
     d.addEventListener('visibilitychange', sync);
+    onChange(wide, sync);
     onChange(reduce, function () { userPaused = reduce.matches; if (pauseBtn) pauseBtn.setAttribute('aria-pressed', userPaused ? 'true' : 'false'); sync(); });
     if (pauseBtn) {
       pauseBtn.setAttribute('aria-pressed', userPaused ? 'true' : 'false');

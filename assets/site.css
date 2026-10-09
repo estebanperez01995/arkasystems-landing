@@ -450,6 +450,7 @@ section.block + section.block::before {
   .hero-grid { grid-template-columns: 1.05fr 0.95fr; }
 }
 @media (max-width: 979px) {
+  .hero-bg, .hero-pause { display: none; }
   .hero { min-height: 0; padding-top: 32px; }
   .hero-copy { text-align: left; }
   .hero-stage { padding: 8px 0 0; }
